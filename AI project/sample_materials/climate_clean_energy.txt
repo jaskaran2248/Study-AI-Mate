@@ -1,0 +1,11 @@
+Climate Science & Renewable Energy Engineering
+
+Climate change mitigation requires urgent systemic transitions toward zero-carbon energy generation, electrification, and sustainable infrastructure. Understanding renewable thermodynamics is essential for future engineers.
+
+Photovoltaic Solar Energy: Photovoltaic cells convert photons directly into electricity via the photoelectric effect in semiconductor p-n junctions. Silicon wafer cells achieve practical efficiencies between 18% and 23%.
+Wind Turbine Aerodynamics: Wind kinetic energy is converted into mechanical rotation. Betz's law establishes the theoretical maximum power extraction limit of an ideal turbine rotor at 59.3%.
+Grid-Scale Energy Storage: Renewable intermittency necessitates energy storage solutions, including lithium-iron-phosphate (LFP) batteries, pumped hydroelectric storage, and green hydrogen electrolysis.
+Greenhouse Gas Life Cycle Assessment: Life cycle assessment (LCA) quantifies carbon dioxide equivalent emissions across extraction, manufacturing, operation, and decommissioning phases.
+Smart Grid Modernization: Integrating distributed energy resources (DERs) requires automated load balancing, phasor measurement units, and bidirectional metering.
+
+SDG 4 Connection: Educating future climate engineers empowers communities to build decentralized, resilient infrastructure resilient against global ecological volatility.

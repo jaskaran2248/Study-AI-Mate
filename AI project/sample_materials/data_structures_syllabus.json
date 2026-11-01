@@ -1,0 +1,19 @@
+{
+  "curriculum_title": "Advanced Data Structures & Algorithmic Efficiency",
+  "domain": "Computer Science & Engineering",
+  "sdg_target": "SDG 4.4 - Technical & Digital Literacy",
+  "modules": [
+    {
+      "name": "Binary Search Trees & Balancing",
+      "summary": "Binary search trees maintain sorted keys for O(log n) average search, insertion, and deletion. Self-balancing trees like AVL and Red-Black trees apply tree rotations to avoid degenerate O(n) linked list behavior."
+    },
+    {
+      "name": "Graph Traversal & Shortest Path",
+      "summary": "Graphs represent non-linear relationships with vertices and edges. Breadth-First Search (BFS) explores neighbor layers in O(V + E) time, while Dijkstra's algorithm uses priority queues for single-source shortest paths with non-negative weights."
+    },
+    {
+      "name": "Dynamic Programming & Memoization",
+      "summary": "Dynamic programming breaks complex recursive problems into overlapping subproblems with optimal substructure. Memoization stores computed subproblem solutions to prevent redundant exponential O(2^n) recomputations."
+    }
+  ]
+}

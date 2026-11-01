@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate AI – Intelligent Adaptive Learning, Quizzes & Study Notes</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            brand: '#2563eb'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Mermaid.js for Mind Map Visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+  </script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased selection:bg-blue-500 selection:text-white">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand & Status Badge -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center text-white font-extrabold shadow-md">
+          🎓
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white">
+              StudyMate <span class="text-blue-600 dark:text-blue-400">AI</span>
+            </h1>
+            <span class="px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 tracking-wide uppercase shadow-sm">
+              Adaptive AI
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 -mt-0.5 hidden sm:block">
+            Intelligent Adaptive Learning, Smart Study Notes & Tiered Quizzes
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Action Utilities -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <div id="header-xp-badge" class="px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 font-bold text-xs shadow-sm">
+          ⭐ 0 XP
+        </div>
+
+        <!-- Accessibility Buttons -->
+        <button id="btn-font-size" class="p-2 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition text-xs font-bold" title="Adjust Text Size">
+          A<span class="text-sm">A</span>
+        </button>
+        <button id="btn-toggle-theme" class="p-2 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Toggle Dark/Light Mode">
+          🌓
+        </button>
+        <button id="btn-open-settings" class="p-2 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="AI Engine Settings">
+          ⚙️
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-100 dark:border-slate-800/80">
+      <nav class="flex space-x-1 sm:space-x-2 py-2 overflow-x-auto text-xs sm:text-sm font-semibold">
+        <button data-tab-target="upload" class="px-3.5 py-2 rounded-lg transition whitespace-nowrap flex items-center space-x-1.5">
+          <span>📁 Upload & Ingest</span>
+        </button>
+        <button data-tab-target="search" class="px-3.5 py-2 rounded-lg transition whitespace-nowrap flex items-center space-x-1.5">
+          <span>🔍 Search & Explore</span>
+        </button>
+        <button data-tab-target="notes" class="px-3.5 py-2 rounded-lg transition whitespace-nowrap flex items-center space-x-1.5">
+          <span>📘 Study Notes & Flashcards</span>
+        </button>
+        <button data-tab-target="quiz" class="px-3.5 py-2 rounded-lg transition whitespace-nowrap flex items-center space-x-1.5">
+          <span>🎯 Tiered Quizzes (Basic → Advanced)</span>
+        </button>
+        <button data-tab-target="skills" class="px-3.5 py-2 rounded-lg transition whitespace-nowrap flex items-center space-x-1.5">
+          <span>📊 Skill Tree & Analytics</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ==================== TAB 1: UPLOAD & INGEST ==================== -->
+    <section id="tab-upload" class="tab-content space-y-8">
+      
+      <!-- Modern Hero Banner -->
+      <div class="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-700 text-white shadow-lg relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+          <span class="px-3 py-1 text-[11px] font-extrabold bg-white/20 backdrop-blur-sm rounded-full tracking-wider uppercase">
+            AI-Powered Study Architecture
+          </span>
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-black mt-2 leading-tight">
+            Transform Any Material Into Active Notes & Mastery Quizzes
+          </h2>
+          <p class="text-white/90 text-sm mt-2 leading-relaxed">
+            Upload your syllabus, lecture slides, research papers, notes, or code. StudyMate AI extracts core principles, builds intuitive analogies, creates active recall flashcards, and generates 4-tier Bloom’s taxonomy assessments to accelerate retention.
+          </p>
+        </div>
+        <div class="absolute right-0 bottom-0 translate-x-8 translate-y-8 text-9xl opacity-10 font-black pointer-events-none">
+          STUDY
+        </div>
+      </div>
+
+      <!-- Upload Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- File Drag & Drop -->
+        <div class="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="text-xl">📄</span>
+              <h3 class="font-bold text-base text-slate-900 dark:text-white">Upload Study Document</h3>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+              Supported formats: <strong>PDF, DOCX, TXT, Markdown, CSV, JSON, Source Code</strong>.
+            </p>
+
+            <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition bg-slate-50/50 dark:bg-slate-800/40">
+              <input type="file" id="file-upload-input" class="hidden" accept=".pdf,.docx,.txt,.md,.markdown,.json,.csv,.py,.js,.html">
+              <div class="text-4xl mb-2">📥</div>
+              <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                Click to browse or drag & drop file here
+              </p>
+              <p class="text-xs text-slate-400 mt-1">Automatic text parsing & metadata extraction</p>
+              <div id="selected-file-name" class="mt-3 text-xs font-bold text-blue-600 dark:text-blue-400 hidden"></div>
+            </div>
+
+            <!-- Subject & Focus Selection -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Subject Area</label>
+                <select id="upload-subject" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+                  <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                  <option value="Environmental & Natural Science">Environmental & Natural Science</option>
+                  <option value="Artificial Intelligence & Machine Learning">Artificial Intelligence & Machine Learning</option>
+                  <option value="Mathematics & Quantitative Reasoning">Mathematics & Quantitative Reasoning</option>
+                  <option value="Life Sciences & Medicine">Life Sciences & Medicine</option>
+                  <option value="Business, Economics & Finance">Business, Economics & Finance</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Learning Focus</label>
+                <select id="upload-focus" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+                  <option value="Comprehensive Core Mastery">Comprehensive Core Mastery</option>
+                  <option value="Foundational Recall & Syntax">Foundational Recall & Syntax</option>
+                  <option value="Applied Problem Solving">Applied Problem Solving</option>
+                  <option value="Advanced Synthesis & Edge Cases">Advanced Synthesis & Edge Cases</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Direct Syllabus / Notes Paste -->
+        <div class="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="text-xl">✍️</span>
+              <h3 class="font-bold text-base text-slate-900 dark:text-white">Paste Syllabus or Notes</h3>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">
+              Copy-paste raw lecture notes, syllabus curriculum, or concept summaries.
+            </p>
+
+            <input type="text" id="paste-title" placeholder="Topic Title (e.g., Data Structures & Algorithms)" class="w-full text-xs p-2.5 mb-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+
+            <textarea id="paste-content" rows="6" placeholder="Paste your study material, key points, definitions, or exam outline here..." class="w-full text-xs p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-mono"></textarea>
+          </div>
+
+          <div class="mt-4">
+            <button id="btn-submit-paste" class="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-sm flex items-center justify-center space-x-2">
+              <span>🚀 Ingest & Extract Concepts</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Ingested Documents Library -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-extrabold text-base text-slate-900 dark:text-white flex items-center space-x-2">
+            <span>📚 Ingested Study Materials Library</span>
+          </h3>
+          <span class="text-xs text-slate-400">Instant Note & Quiz Generation</span>
+        </div>
+
+        <div id="documents-list" class="space-y-3">
+          <!-- Loaded dynamically -->
+          <div class="p-6 text-center text-slate-400 text-sm">Loading materials...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: SEARCH & EXPLORE ==================== -->
+    <section id="tab-search" class="tab-content hidden space-y-6">
+      
+      <!-- Unified Search Bar -->
+      <div class="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div>
+          <h2 class="text-lg font-black text-slate-900 dark:text-white">
+            Smart Search & Discovery Engine
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            Search across your notes, questions, and documents — or generate an entire study pack directly from any search query!
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-2">
+          <div class="relative flex-1">
+            <span class="absolute left-3.5 top-3 text-slate-400">🔍</span>
+            <input type="text" id="search-input" placeholder="Search any topic, concept, keyword (e.g. 'Binary Search', 'Urban Flooding', 'Neural Networks')..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+          </div>
+          <button id="btn-execute-search" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-sm">
+            Search Library
+          </button>
+        </div>
+
+        <!-- Instant Topic Study Pack Generator CTA -->
+        <button id="btn-gen-from-search" class="hidden w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs transition shadow-sm">
+          ⚡ Generate AI Study Pack on Topic
+        </button>
+
+        <!-- Difficulty Filters & Quick Chips -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+          <div class="flex items-center space-x-1 text-xs">
+            <span class="text-slate-400 font-semibold mr-1">Difficulty:</span>
+            <button data-diff="all" class="search-diff-filter px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-600 text-white transition">All</button>
+            <button data-diff="basic" class="search-diff-filter px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Basic</button>
+            <button data-diff="intermediate" class="search-diff-filter px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Intermediate</button>
+            <button data-diff="advanced" class="search-diff-filter px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Advanced</button>
+            <button data-diff="mastery" class="search-diff-filter px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Mastery</button>
+          </div>
+
+          <!-- Suggested Chips -->
+          <div class="flex items-center space-x-1.5 text-xs">
+            <span class="text-slate-400 font-semibold">Suggested:</span>
+            <button class="search-chip px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-blue-50 text-[11px]" data-topic="Python Algorithms">Python Algorithms</button>
+            <button class="search-chip px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-blue-50 text-[11px]" data-topic="Clean Energy Systems">Clean Energy</button>
+            <button class="search-chip px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-blue-50 text-[11px]" data-topic="Urban Flood Hydrology">Urban Hydrology</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Results Area -->
+      <div id="search-results-container" class="space-y-4">
+        <!-- Injected via search.js -->
+        <div class="p-8 text-center text-slate-400 text-sm">
+          Type keywords above to search your question bank, notes, and study guides.
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: STUDY NOTES & FLASHCARDS ==================== -->
+    <section id="tab-notes" class="tab-content hidden space-y-6">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Left: Notes History / Selector -->
+        <div class="lg:col-span-1 space-y-3">
+          <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Generated Study Notes</h3>
+          <div id="notes-history-list" class="space-y-2">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Right: Active Note Full View -->
+        <div id="notes-detail-view" class="lg:col-span-3 space-y-6 hidden">
+          
+          <!-- Note Header Card -->
+          <div class="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                  Interactive Study Guide
+                </span>
+                <h2 id="note-title" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-1">Study Notes</h2>
+              </div>
+              
+              <!-- Action Toolbar -->
+              <div class="flex items-center space-x-2">
+                <button onclick="window.speakText(document.getElementById('note-summary').textContent)" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 transition" title="Read Aloud">
+                  🔊 Read Aloud
+                </button>
+                <a id="btn-export-md" href="#" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition shadow-sm">
+                  📥 Export Markdown
+                </a>
+                <a id="btn-export-json" href="#" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition shadow-sm">
+                  JSON
+                </a>
+              </div>
+            </div>
+
+            <!-- Executive Summary -->
+            <div class="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800">
+              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">📌 Executive Summary</h4>
+              <p id="note-summary" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+            </div>
+          </div>
+
+          <!-- Active Recall Flashcard Deck (3D Flip) -->
+          <div class="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-extrabold text-base text-slate-900 dark:text-white flex items-center space-x-2">
+                  <span>🗂️ Active Recall Flashcards</span>
+                </h3>
+                <p class="text-xs text-slate-500">Spaced repetition deck for long-term retention</p>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span id="card-diff-badge" class="badge-basic text-xs px-2 py-0.5 rounded font-bold">Basic</span>
+                <span id="card-counter" class="text-xs font-bold text-slate-400">1 of 5</span>
+              </div>
+            </div>
+
+            <!-- Flashcard 3D Card Container -->
+            <div class="flashcard-container max-w-xl mx-auto py-2">
+              <div id="flashcard-card" class="flashcard-inner">
+                <!-- Front -->
+                <div class="flashcard-front">
+                  <span id="card-tag" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 mb-3">
+                    Active Recall
+                  </span>
+                  <p id="card-front-text" class="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100">
+                    Question will appear here...
+                  </p>
+                  <span class="text-xs text-slate-400 mt-4">Click anywhere or press Flip</span>
+                </div>
+                <!-- Back -->
+                <div class="flashcard-back">
+                  <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 mb-3">
+                    Explanation & Analogy
+                  </span>
+                  <p id="card-back-text" class="text-sm sm:text-base text-slate-800 dark:text-slate-100 whitespace-pre-line">
+                    Answer will appear here...
+                  </p>
+                  <span class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold mt-4">Self-Assessment Below</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Flashcard Control Bar -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <div class="flex items-center space-x-2">
+                <button id="btn-prev-card" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                  ← Prev
+                </button>
+                <button id="btn-flip-card" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition shadow-sm">
+                  🔄 Flip Card
+                </button>
+                <button id="btn-next-card" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                  Next →
+                </button>
+              </div>
+
+              <!-- Spaced Repetition Ratings -->
+              <div class="flex items-center space-x-1.5">
+                <span class="text-xs text-slate-400 mr-1">Rate Recall:</span>
+                <button onclick="window.Notes.rateFlashcard('Hard')" class="px-2.5 py-1 rounded-md text-xs font-bold bg-rose-50 text-rose-700 dark:bg-rose-950/30 dark:text-rose-300 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 transition">
+                  Again (Hard)
+                </button>
+                <button onclick="window.Notes.rateFlashcard('Medium')" class="px-2.5 py-1 rounded-md text-xs font-bold bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 transition">
+                  Good (Medium)
+                </button>
+                <button onclick="window.Notes.rateFlashcard('Easy')" class="px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition">
+                  Easy (Mastered)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Concepts Breakdown -->
+          <div class="space-y-3">
+            <h3 class="font-extrabold text-base text-slate-900 dark:text-white flex items-center space-x-2">
+              <span>🧠 High-Yield Concepts & Real-World Analogies</span>
+            </h3>
+            <div id="note-concepts-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Injected via notes.js -->
+            </div>
+          </div>
+
+          <!-- Cheat Sheet & Formulas -->
+          <div class="space-y-3">
+            <h3 class="font-extrabold text-base text-slate-900 dark:text-white flex items-center space-x-2">
+              <span>⚡ Cheat Sheet & Rapid Rules</span>
+            </h3>
+            <div id="note-cheatsheet-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Injected via notes.js -->
+            </div>
+          </div>
+
+          <!-- Visual Concept Mind Map -->
+          <div class="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-extrabold text-base text-slate-900 dark:text-white flex items-center space-x-2">
+                <span>🗺️ Visual Concept Mind Map</span>
+              </h3>
+              <span class="text-xs text-slate-400">Mermaid.js Architectural Tree</span>
+            </div>
+            <pre id="note-mindmap-code" class="p-4 rounded-xl bg-slate-950 text-emerald-400 font-mono text-xs overflow-x-auto"></pre>
+          </div>
+
+          <!-- Glossary -->
+          <div class="space-y-3">
+            <h3 class="font-extrabold text-base text-slate-900 dark:text-white flex items-center space-x-2">
+              <span>📖 High-Yield Terminology Glossary</span>
+            </h3>
+            <div id="note-glossary-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Injected via notes.js -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: TIERED QUIZZES & EXAM ENGINE ==================== -->
+    <section id="tab-quiz" class="tab-content hidden space-y-6">
+      
+      <!-- View 1: Quizzes Overview List -->
+      <div id="quizzes-overview-view" class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+              Tiered Mastery Assessments
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Bloom's Revised Taxonomy: Basic (Recall) → Intermediate (Apply) → Advanced (Evaluate) → Mastery (Synthesize & Innovate).
+            </p>
+          </div>
+          <button id="btn-open-create-quiz" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-sm flex items-center space-x-1.5 self-start sm:self-auto">
+            <span>+ Create Custom Quiz</span>
+          </button>
+        </div>
+
+        <!-- Quizzes Grid -->
+        <div id="quizzes-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="p-8 text-center text-slate-400 text-sm">Loading available quizzes...</div>
+        </div>
+      </div>
+
+      <!-- View 2: Live Quiz Runner (Timer, Question, Options) -->
+      <div id="quiz-runner-container" class="hidden space-y-6 max-w-3xl mx-auto">
+        
+        <!-- Runner Top Bar -->
+        <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 id="runner-quiz-title" class="font-bold text-base text-slate-900 dark:text-white">Active Quiz</h3>
+            <div class="flex items-center space-x-3">
+              <span id="runner-timer" class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-mono text-xs font-bold">⏱️ 15:00</span>
+              <button onclick="window.Quiz.exitQuiz()" class="text-xs text-slate-400 hover:text-rose-500 font-semibold transition">Exit</button>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div>
+            <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+              <div id="runner-progress-bar" class="bg-blue-600 h-full rounded-full transition-all duration-300" style="width: 10%"></div>
+            </div>
+            <div class="flex items-center justify-between text-xs text-slate-400 mt-1.5">
+              <span id="runner-progress-text">Question 1 of 8</span>
+              <div class="flex items-center space-x-2">
+                <span id="runner-diff-badge" class="badge-basic text-xs px-2 py-0.5 rounded font-bold">BASIC</span>
+                <span id="runner-points-badge" class="text-amber-600 font-bold">+10 XP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+          <h4 id="runner-question-text" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-relaxed">
+            Question stem goes here...
+          </h4>
+
+          <!-- Hint Dropdown -->
+          <div>
+            <button id="btn-quiz-hint" class="text-xs text-amber-600 dark:text-amber-400 font-bold hover:underline flex items-center space-x-1">
+              <span>💡 Need a hint?</span>
+            </button>
+            <div id="runner-hint-box" class="hidden mt-2 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 text-xs text-amber-900 dark:text-amber-200">
+              <span class="font-bold">Hint:</span> <span id="runner-hint-text"></span>
+            </div>
+          </div>
+
+          <!-- Options List -->
+          <div id="runner-options-container" class="space-y-3">
+            <!-- Injected via quiz.js -->
+          </div>
+
+          <!-- Runner Bottom Navigation -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+            <button id="btn-quiz-prev" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition disabled:opacity-40">
+              ← Previous
+            </button>
+            <button id="btn-quiz-next" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-sm">
+              Next Question →
+            </button>
+            <button id="btn-quiz-finish" class="hidden px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shadow-sm">
+              Submit & Grade Exam ✨
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- View 3: Scorecard & Bloom's Diagnostic Results -->
+      <div id="quiz-results-container" class="hidden space-y-6 max-w-3xl mx-auto">
+        
+        <!-- Score Overview Card -->
+        <div class="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-center space-y-5">
+          <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+            Assessment Results
+          </span>
+
+          <div class="py-1">
+            <div id="res-percentage" class="text-5xl font-black text-slate-900 dark:text-white">85%</div>
+            <div id="res-score" class="text-xs text-slate-400 mt-1 font-semibold">85 / 100 points</div>
+          </div>
+
+          <div class="flex items-center justify-center space-x-8 py-2 border-y border-slate-100 dark:border-slate-800">
+            <div>
+              <span class="text-xs text-slate-400 block font-medium">XP Gained</span>
+              <strong id="res-xp" class="text-lg text-amber-500 font-extrabold">+110 XP</strong>
+            </div>
+            <div class="h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
+            <div>
+              <span class="text-xs text-slate-400 block font-medium">Competency Tier</span>
+              <strong id="res-mastery" class="text-lg text-purple-600 font-extrabold">Apprentice Scholar</strong>
+            </div>
+          </div>
+
+          <!-- AI Diagnostic Feedback -->
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 text-left text-xs text-slate-700 dark:text-slate-300 leading-relaxed border border-slate-200/80 dark:border-slate-800">
+            <span class="font-bold block mb-1 text-blue-600 dark:text-blue-400">🤖 AI Diagnostic Analysis:</span>
+            <span id="res-feedback"></span>
+          </div>
+
+          <!-- Structured Bloom's Taxonomy Performance (Clean & Zero-Overlap) -->
+          <div class="text-left space-y-3 pt-1">
+            <h5 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              Bloom's Taxonomy Performance
+            </h5>
+            
+            <div class="space-y-4 bg-slate-50/70 dark:bg-slate-850/60 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800">
+              
+              <!-- Basic Tier -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-center text-xs font-semibold">
+                  <span class="text-emerald-700 dark:text-emerald-400 flex items-center space-x-1.5">
+                    <span>🌱 Basic (Recall)</span>
+                  </span>
+                  <span id="label-tier-basic" class="text-slate-700 dark:text-slate-300 font-bold">0% (0/0)</span>
+                </div>
+                <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 overflow-hidden">
+                  <div id="bar-tier-basic" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <!-- Intermediate Tier -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-center text-xs font-semibold">
+                  <span class="text-amber-700 dark:text-amber-400 flex items-center space-x-1.5">
+                    <span>⚙️ Intermediate (Apply)</span>
+                  </span>
+                  <span id="label-tier-intermediate" class="text-slate-700 dark:text-slate-300 font-bold">0% (0/0)</span>
+                </div>
+                <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 overflow-hidden">
+                  <div id="bar-tier-intermediate" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <!-- Advanced Tier -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-center text-xs font-semibold">
+                  <span class="text-indigo-700 dark:text-indigo-400 flex items-center space-x-1.5">
+                    <span>🧠 Advanced (Evaluate)</span>
+                  </span>
+                  <span id="label-tier-advanced" class="text-slate-700 dark:text-slate-300 font-bold">0% (0/0)</span>
+                </div>
+                <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 overflow-hidden">
+                  <div id="bar-tier-advanced" class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <!-- Mastery Tier -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-center text-xs font-semibold">
+                  <span class="text-purple-700 dark:text-purple-400 flex items-center space-x-1.5">
+                    <span>🏆 Mastery (Create & Innovate)</span>
+                  </span>
+                  <span id="label-tier-mastery" class="text-slate-700 dark:text-slate-300 font-bold">0% (0/0)</span>
+                </div>
+                <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 overflow-hidden">
+                  <div id="bar-tier-mastery" class="bg-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Post Quiz Actions -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <button id="btn-launch-remediation" class="hidden w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold text-xs transition shadow-md">
+              🎯 Practice Missed Topics
+            </button>
+            <button onclick="window.Quiz.exitQuiz()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              Return to Quizzes
+            </button>
+          </div>
+        </div>
+
+        <!-- Question Review Accordion -->
+        <div class="space-y-3">
+          <h4 class="font-extrabold text-base text-slate-900 dark:text-white">
+            Question-by-Question Review & Rationales
+          </h4>
+          <div id="res-review-container" class="space-y-3">
+            <!-- Injected via quiz.js -->
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 5: SKILL TREE & ANALYTICS ==================== -->
+    <section id="tab-skills" class="tab-content hidden space-y-6">
+      
+      <!-- Top Metrics Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+          <div class="text-3xl">⭐</div>
+          <div>
+            <span class="text-xs text-slate-400 font-semibold block">Total Accumulated XP</span>
+            <div id="stat-total-xp" class="text-2xl font-black text-slate-900 dark:text-white">0 XP</div>
+          </div>
+        </div>
+
+        <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+          <div class="text-3xl">📝</div>
+          <div>
+            <span class="text-xs text-slate-400 font-semibold block">Quizzes Completed</span>
+            <div id="stat-quizzes-taken" class="text-2xl font-black text-slate-900 dark:text-white">0</div>
+          </div>
+        </div>
+
+        <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+          <div class="text-3xl">🎯</div>
+          <div>
+            <span class="text-xs text-slate-400 font-semibold block">Overall Average Accuracy</span>
+            <div id="stat-avg-accuracy" class="text-2xl font-black text-slate-900 dark:text-white">0.0%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill Competency Progression Matrix -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-extrabold text-base text-slate-900 dark:text-white">
+            Competency Tree & Bloom's Mastery Breakdown
+          </h3>
+          <span class="text-xs text-slate-400">Calibrated by Quiz Performance</span>
+        </div>
+        <div id="skills-tree-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Injected via skills.js -->
+        </div>
+      </div>
+
+      <!-- Badges Shelf -->
+      <div class="space-y-3">
+        <h3 class="font-extrabold text-base text-slate-900 dark:text-white">
+          Knowledge & Excellence Badges
+        </h3>
+        <div id="badges-shelf-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <!-- Injected via skills.js -->
+        </div>
+      </div>
+
+      <!-- Recent Quiz Activity Table -->
+      <div class="p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+        <h3 class="font-extrabold text-base text-slate-900 dark:text-white">
+          Recent Assessment Attempts
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-slate-200 dark:border-slate-800 text-xs text-slate-400">
+                <th class="p-3">Quiz Topic</th>
+                <th class="p-3">Score</th>
+                <th class="p-3">Time Spent</th>
+                <th class="p-3">Date</th>
+                <th class="p-3">Action</th>
+              </tr>
+            </thead>
+            <tbody id="recent-attempts-list">
+              <!-- Injected via skills.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==================== CREATE QUIZ MODAL ==================== -->
+  <div id="create-quiz-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl max-w-lg w-full p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white">Generate Custom Quiz</h3>
+        <button id="btn-close-quiz-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">✕</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Select from Uploaded Material</label>
+          <select id="quiz-doc-select" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+            <!-- Injected -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Or Enter Any Custom Topic</label>
+          <input type="text" id="quiz-custom-topic" placeholder="e.g. Graph Algorithms, Photosynthesis, Solar Cells..." class="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Difficulty Tier</label>
+            <select id="quiz-tier-select" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+              <option value="Adaptive Mix">Adaptive Mix (Ladder)</option>
+              <option value="Basic">Basic (Recall)</option>
+              <option value="Intermediate">Intermediate (Apply)</option>
+              <option value="Advanced">Advanced (Evaluate)</option>
+              <option value="Mastery">Mastery (Synthesize)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Questions</label>
+            <select id="quiz-count-select" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+              <option value="5">5 Questions</option>
+              <option value="8" selected>8 Questions</option>
+              <option value="10">10 Questions</option>
+              <option value="15">15 Questions</option>
+              <option value="20">20 Questions</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Time Limit</label>
+            <select id="quiz-time-select" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+              <option value="8">8 Mins</option>
+              <option value="12" selected>12 Mins</option>
+              <option value="15">15 Mins</option>
+              <option value="20">20 Mins</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2">
+        <button id="btn-submit-create-quiz" class="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-sm">
+          Generate Tiered Quiz Now 🎯
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SETTINGS MODAL ==================== -->
+  <div id="settings-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white">AI Engine Configuration</h3>
+        <button id="btn-close-settings" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">✕</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">AI Provider</label>
+          <select id="setting-provider" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">
+            <option value="local">Built-in Local NLP Engine (100% Offline, Zero-Config)</option>
+            <option value="gemini">Google Gemini API (gemini-1.5-flash)</option>
+            <option value="openai">OpenAI API (gpt-4o-mini)</option>
+          </select>
+          <p class="text-[11px] text-slate-400 mt-1">
+            The built-in local engine works 100% offline out-of-the-box without requiring any API keys.
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">API Key (Optional for Gemini / OpenAI)</label>
+          <input type="password" id="setting-api-key" placeholder="Paste optional API key here" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-mono">
+        </div>
+      </div>
+
+      <div class="pt-2">
+        <button id="btn-save-settings" class="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-sm">
+          Save Configuration
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-4 text-center text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="flex items-center space-x-2">
+        <span class="font-extrabold text-blue-600 dark:text-blue-400">StudyMate AI</span>
+        <span>• Intelligent Adaptive Learning Platform</span>
+      </div>
+      <div>Active Recall Notes, Bloom's Tiered Quizzes & Skill Building</div>
+    </div>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/uploader.js"></script>
+  <script src="/static/js/notes.js"></script>
+  <script src="/static/js/quiz.js"></script>
+  <script src="/static/js/search.js"></script>
+  <script src="/static/js/skills.js"></script>
+</body>
+</html>

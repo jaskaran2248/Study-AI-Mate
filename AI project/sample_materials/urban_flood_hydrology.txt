@@ -1,0 +1,10 @@
+Urban Flood Hydrology & Sustainable Drainage Engineering
+
+Urbanization significantly alters natural hydrological cycles. Replacing permeable vegetation with impervious surfaces such as asphalt and concrete drastically reduces rainfall infiltration, elevating surface runoff coefficients from 10%-20% up to 80%-90%.
+
+Peak Runoff Rate: The Rational Method calculates peak runoff Q = C * I * A, where C is the runoff coefficient, I is rainfall intensity in mm/hr, and A is catchment drainage area in hectares.
+Sustainable Drainage Systems (SuDS): Engineered green infrastructure—including permeable pavements, bioswales, retention ponds, and rainwater harvesting cisterns—designed to attenuate runoff velocity and promote local infiltration.
+Hydrograph Attenuation: Delaying the time to peak (Tp) prevents storm sewer capacity overflow and mitigates catastrophic urban flash inundations.
+Hydraulic Retention Basins: Temporary reservoirs engineered with staged outlet orifices to regulate discharge rates into receiving streams.
+
+SDG 4 & SDG 11 Synergy: Equipping urban engineering students with quantitative hydrological modeling skills fosters resilient, sustainable smart cities.
